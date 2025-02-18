@@ -8,25 +8,30 @@ import przystanki.Przystanek;
 import symulacja.DaneSymulacji;
 import zdarzenia.Postój;
 
+// A class representing a Tram
 public class Tramwaj extends Pojazd {
-    // dane
+    // data
 
+    // current direction
+    // semantics: 1 indicates "away from its home terminal", -1 indicates "towards its home terminal"
     private int kierunek;
 
-    // techniczne
+    // technicalities
 
     public Tramwaj(int numerBoczny, Linia linia, Przystanek pętlaDomowa, int pojemność, int kierunek) {
         super(numerBoczny, linia, pętlaDomowa, pojemność);
         this.kierunek = kierunek;
     }
 
-    // operacje
+    // operations
 
+    // Ordinary standalone print format function
     @Override
     public String toString() {
         return "Tramwaj linii nr " + this.linia().numer() + " (nr boczny " + this.numerBoczny() + ")";
     }
 
+    // Specialised print format function as part of a sentence in Polish arising from Stop event
     @Override
     public String wypiszDoPostoju() {
         return "tramwaju linii nr " + this.linia().numer() + " (nr boczny " + this.numerBoczny() + ")";
