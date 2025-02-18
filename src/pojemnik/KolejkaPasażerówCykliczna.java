@@ -4,21 +4,31 @@ import czas.Moment;
 import przystanki.Przystanek;
 import pasażerowie.Pasażer;
 
-// Implementacja kolejki pasażerów z wykorzystaniem tablicy cyklicznej
-// Korzystamy z tego, że rozmiar kolejki pasażerów jest ograniczony przez min(pojemność tramwaju, pojemność przystanku)
+// Cyclic buffer passenger queue
+// Suitable because the size of the queue never exceeds
+// min(vehicle capacity, stop capacity)
 public class KolejkaPasażerówCykliczna implements KolejkaPasażerów {
 
+    // data
+
+    // internal cyclic array
     private Pasażer[] tab;
-    // konwencja: oznaczeniem pustej kolejki jest początek równy -1
+
+    // begin
+    // The queue is empty iff begin == -1
     private int początek;
+    // end
     private int koniec;
+
+    // technicalities
 
     public KolejkaPasażerówCykliczna(int pojemność) {
         this.tab = new Pasażer[pojemność];
         this.początek = this.koniec = -1;
     }
 
-    // Wstawia nowego pasażera na koniec kolejki
+    // operations
+
     @Override
     public void wstaw(Pasażer p) {
         assert !this.czyPełna(): "Próba wstawienia pasażera do pełnej kolejki";
