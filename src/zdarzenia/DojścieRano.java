@@ -4,20 +4,21 @@ import pasażerowie.Pasażer;
 import czas.Moment;
 import pojemnik.KolejkaZdarzeń;
 
+// Passenger arrival on their home stop event
 public class DojścieRano extends Zdarzenie {
 
-    // dane
+    // data
 
     private Pasażer pasażer;
 
-    // techniczne
+    // technicalities
 
     public DojścieRano(Moment moment, Pasażer pasażer) {
         super(moment);
         this.pasażer = pasażer;
     }
 
-    // operacje
+    // operations
 
     @Override
     public void obsłuż(KolejkaZdarzeń q) {
