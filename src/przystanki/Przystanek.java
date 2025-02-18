@@ -8,35 +8,38 @@ import pojemnik.KolejkaPasażerów;
 import pojemnik.KolejkaPasażerówCykliczna;
 import symulacja.DaneSymulacji;
 
+// A class representing a stop
 public class Przystanek implements Comparable<Przystanek> {
 
-    // dane
+    // data
 
+    // unique name
     private String nazwa;
 
+    // passenger queue
     private KolejkaPasażerów czekający;
 
-    // techniczne
+    // technicalities
 
     public Przystanek(DaneSymulacji daneSymulacji) {
         this.nazwa = Czytnik.odczyt().next();
         this.czekający = new KolejkaPasażerówCykliczna(daneSymulacji.pojemnośćPrzystanku());
     }
 
-    // komparator przystanków do sortowania leksykograficznego tablicy przystanków w danych symulacji
+    // Helper comparator function for lexicographical sorting by name
     @Override
     public int compareTo(Przystanek przystanek) {
         return this.nazwa.compareTo(przystanek.nazwa);
     }
 
-    // operacje
+    // operations
 
     @Override
     public String toString() {
         return this.nazwa;
     }
 
-    // Operator porównania przystanków identyfikowanych nazwami
+    // Compares stops for equality using their names
     public boolean równy(Przystanek p) {
         return this.nazwa.equals(p.nazwa());
     }
@@ -45,31 +48,33 @@ public class Przystanek implements Comparable<Przystanek> {
         return this.nazwa;
     }
 
+    // Adds the passenger to the waiting passengers queue
     public void dodajPasażeraPrzystanek(Pasażer pasażer) {
         if (!this.czekający.czyPełna()) {
             this.czekający.wstaw(pasażer);
         }
     }
 
-    // Opróżnia przystanek i zwraca łączny czas oczekiwania pasażerów stojących na tym przystanku do godziny końca kursowania
+    // Empties the stop and returns total waiting time of passengers waiting at this stop until the end of service
     public int opróżnij(Moment ostatniMomentDnia) {
         int wynik = this.czekający.dodajCzasyOczekiwania(ostatniMomentDnia);
         this.czekający.opróżnij();
         return wynik;
     }
 
+    // isEmpty
     public boolean czyPusty() {
         return this.czekający.czyPusta();
     }
 
+    // isFull
     public boolean czyZapełniony() {
         return this.czekający.czyPełna();
     }
 
-    // Obsługuje wsiadanie pasażerów do danego pojazdu w danym momencie
-    // Indeks przystanku to numer przystanku w kontekście linii pojazdu, podawany dla usprawnienia czasu działania programu
+    // Handles loading of passengers into given vehicle at given moment
     public void wsiadanie(Pojazd pojazd, int indeksPrzystanku, Moment moment) {
-        // Pasażerowie wsiadają, póki przystanek nie jest pusty i w pojeździe jest miejsce
+        // Passengers get on the vehicle until the stop is empty or the vehicle is full
         while (!pojazd.czyZapełniony() && !this.czyPusty()) {
             Pasażer pasażer = this.czekający.zdejmij();
             pasażer.wsiądźDoPojazdu(pojazd, indeksPrzystanku, moment);
