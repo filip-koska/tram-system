@@ -4,25 +4,30 @@ import czas.Moment;
 import przystanki.Przystanek;
 import pasażerowie.Pasażer;
 
-// Zestaw operacji określonych dla kolejki pasażerów
+// Interface for a passenger queue
 public interface KolejkaPasażerów {
 
-    // Wstawia pasażera na koniec kolejki
+    // enqueue
     void wstaw(Pasażer p);
 
-    // Zdejmuje pasażera z początku kolejki i zwraca go
+    // dequeue
     Pasażer zdejmij();
 
-    // Usuwa pasażera na i-tym miejscu z w kolejce i zwraca go
+    // erase
     Pasażer usuńZeŚrodka(int i);
 
+    // isEmpty
     boolean czyPusta();
 
+    // isFull
     boolean czyPełna();
 
+    // Finds a passenger willing to get off at given stop
     int znajdźChętnegoDoWysiadki(Przystanek przystanek);
 
+    // Add waiting times of the passengers in the queue
     int dodajCzasyOczekiwania(Moment ostatniMomentDnia);
 
+    // clear
     void opróżnij();
 }
