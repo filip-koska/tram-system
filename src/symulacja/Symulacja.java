@@ -6,26 +6,27 @@ import pojemnik.KolejkaZdarzeń;
 import pojemnik.KolejkaZdarzeńWektor;
 import zdarzenia.Zdarzenie;
 
+// Class representing the logic of the simulation
 public class Symulacja {
 
-    // dane
+    // data
 
     private DaneSymulacji daneSymulacji;
 
-    // techniczne
+    // technicalities
 
     public Symulacja() {
         this.daneSymulacji = new DaneSymulacji();
     }
 
-    // operacje
+    // operations
 
     @Override
     public String toString() {
         return this.daneSymulacji + "";
     }
 
-    // Przeprowadza symulację
+    // Executes the simulation
     public void symuluj() {
         KolejkaZdarzeń q = new KolejkaZdarzeńWektor();
         for (int i = 0; i < this.daneSymulacji.liczbaDni(); ++i) {
@@ -46,7 +47,7 @@ public class Symulacja {
         System.out.println("Całkowita liczba przejazdów: " + this.daneSymulacji.całkowitaLiczbaPrzejazdów());
     }
 
-    // Wypuszcza rano pasażerów na ich przystanki domowe
+    // Initiates the influx of passengers at the beginning of a day
     private void wypuśćPasażerów(KolejkaZdarzeń q, int dzień) {
         for (int i = 0; i < this.daneSymulacji.liczbaPasażerów(); ++i) {
             Moment nowyMoment = new Moment(Losowanie.losuj(DaneSymulacji.pierwszaGodzinaPrzychodzenia(),
@@ -55,8 +56,8 @@ public class Symulacja {
         }
     }
 
-    // Obsługuje koniec dnia: opróżnia wszystkie przystanki i pojazdy, aktualizuje czasy oczekiwania i liczbę przejazdów
-    // oraz wypisuje statystyki dzienne
+    // Handles the end of a day: empties all stops and vehicles, updates waiting times and numbers of rides
+    // and prints daily statistics
     private void koniecDnia(Moment ostatniMomentDnia) {
         int dziennaLiczbaPrzejazdów = 0;
         int dziennyCzasOczekiwania = 0;
@@ -78,7 +79,7 @@ public class Symulacja {
         this.daneSymulacji.dodajPrzejazdy(dziennaLiczbaPrzejazdów);
     }
 
-    // Oblicza średni czas oczekiwania pasażerów
+    // Calculates the mean waiting time of passengers
     private String obliczŚredniCzasOczekiwania() {
         if (this.daneSymulacji.całkowitaLiczbaPrzejazdów() == 0) {
             return "0 minut 0 sekund";
