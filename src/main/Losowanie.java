@@ -2,7 +2,7 @@ package main;
 
 import java.util.Random;
 
-// Klasa obsługująca losowanie liczby z przedziału
+// A simple Singleton wrapper for a random number generator
 public class Losowanie {
 
     private static final Random r = new Random();
