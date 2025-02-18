@@ -1,26 +1,28 @@
 package czas;
 
-// Klasa przechowująca moment w czasie
+// A class storing a timestamp
 public class Moment {
 
-    // dane
+    // data
 
-    // Trzymamy czas jako godzinę wyrażoną w minutach
+    // time
+    // The time is represented logically as the number of minutes since the start of the day
     private int czas;
 
+    // day
     private int dzień;
 
-    // techniczne
+    // technicalities
 
     public Moment(int czas, int dzień) {
         this.czas = czas;
         this.dzień = dzień;
     }
 
-    // operacje
+    // operations
 
 
-    // Metoda toString zamienia czas w minutach na format GG:MM (dwie cyfry na godziny i dwie na minuty, oddzielone dwukropkiem)
+    // The method converts time (czas) to GG:MM format discarding seconds (two digits for hour and two digits for minutes, colon-separated)
     @Override
     public String toString() {
         return "Dzień " + this.dzień + ", godz. "
