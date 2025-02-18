@@ -8,30 +8,46 @@ import main.Losowanie;
 
 import java.util.Arrays;
 
-// Klasa przechowująca dane pojedynczej Symulacji
-// Stworzona w celu wygodnego, czytelnego przekazywania "globalnych" danych symulacji do metod innych klas
-// oraz jednoczesnego uniknięcia atrybutów statycznych
+// Class storing data of a single simulation
 public class DaneSymulacji {
 
-    // dane
+    // data
+    
+    // Critical constant time values
 
-    // Stałe na ważne godziny w kontekście symulacji
+    // last hour of service
     private static final int ostatniaGodzinaKursowania = 23 * 60;
+    // first hour of passenger influx
     private static final int pierwszaGodzinaPrzychodzenia = 6 * 60;
+    // last hour of passenger influx
     private static final int ostatniaGodzinaPrzychodzenia = 12 * 60;
 
+    // number of days
     private int liczbaDni;
+    // number of passengers
     private int liczbaPasażerów;
+    // number of stops
     private int liczbaPrzystanków;
+    // stop capacity
     private int pojemnośćPrzystanku;
+    // tram capacity
     private int pojemnośćTramwaju;
+    // number of lines
     private int liczbaLinii;
+    // lines
     private Linia[] linie;
+    // stops
     private Przystanek[] przystanki;
+    // passengers
     private Pasażer[] pasażerowie;
+    // helper variable for tram number generation
     private int numerTramwaju;
+    // total waiting time
     private int całkowityCzasOczekiwania;
+    // total number of rides
     private int całkowitaLiczbaPrzejazdów;
+
+    // technicalities
 
     public DaneSymulacji() {
         this.liczbaDni = Czytnik.odczyt().nextInt();
@@ -58,14 +74,13 @@ public class DaneSymulacji {
         this.całkowitaLiczbaPrzejazdów = this.całkowityCzasOczekiwania = 0;
     }
 
-    // Wybiera losowy przystanek z tablicy wszystkich przystanków
+    // Randomly selects a stop from the stops array
     public Przystanek losujPrzystanek() {
         int indeksPrzystankuDomowego = Losowanie.losuj(0, this.liczbaPrzystanków - 1);
         return this.przystanki[indeksPrzystankuDomowego];
     }
-
-    // Szuka przystanku po nazwie w tablicy przystanków
-    // Tablica jest posortowana leksykograficznie
+    
+    // Searches for the stop in the stops array using binary search
     public Przystanek znajdźPrzystanek(String nazwa) {
         int lewy = 0, prawy = this.przystanki.length;
         while (prawy - lewy > 1) {
@@ -157,17 +172,18 @@ public class DaneSymulacji {
         return this.przystanki[i];
     }
 
-    // Zwraca numer dla nowo skonstruowanego tramwaju, a następnie aktualizuje zwracaną wartość dla przyszłych tramwajów
+    // Returns an ID number for a newly constructed tram and updates the return value for future trams
     public int nowyNumerTramwaju() {
         return this.numerTramwaju++;
     }
 
-    //
+    // Updates total number of rides
     public void dodajPrzejazdy(int liczbaPrzejazdów) {
         assert liczbaPrzejazdów >= 0: "Niepoprawna liczba przejazdów";
         this.całkowitaLiczbaPrzejazdów += liczbaPrzejazdów;
     }
 
+    // Updates total waiting time
     public void dodajCzasOczekiwania(int czasOczekiwania) {
         assert czasOczekiwania >= 0: "Niepoprawny czas oczekiwania";
         this.całkowityCzasOczekiwania += czasOczekiwania;
