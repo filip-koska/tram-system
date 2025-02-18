@@ -2,14 +2,16 @@ package pojemnik;
 
 import zdarzenia.Zdarzenie;
 
+// Interface for an event priority queue
 public interface KolejkaZdarzeń {
 
-    // Wstawia nowe zdarzenie do kolejki priorytetowej
+    // enqueue
     void wstaw(Zdarzenie z);
 
-    // Zdejmuje zdarzenie z początku kolejki priorytetowej
+    // dequeue
     Zdarzenie zdejmij();
 
+    // isEmpty
     boolean czyPusta();
 
 }
