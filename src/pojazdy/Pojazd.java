@@ -9,32 +9,36 @@ import pojemnik.KolejkaZdarzeń;
 import przystanki.Przystanek;
 import zdarzenia.Postój;
 
+// Abstract class representing a vehicle
 public abstract class Pojazd {
 
-    // dane
+    // data
 
+    // unique ID number
     private int numerBoczny;
+    // line served by the vehicle
     private Linia linia;
+    // queue of passengers currently riding the vehicle
     private KolejkaPasażerów jadący;
+    // home terminal
     private Przystanek pętlaDomowa;
 
-    // techniczne
+    // technicalities
 
     public Pojazd(int numerBoczny, Linia linia, Przystanek pętlaDomowa, int pojemność) {
         this.numerBoczny = numerBoczny;
         this.linia = linia;
-        //this.kierunek = kierunek;
         this.pętlaDomowa = pętlaDomowa;
         this.jadący = new KolejkaPasażerówCykliczna(pojemność);
     }
 
 
-    // operacje
+    // operations
 
-    // Chcemy wymusić na podklasach sformatowanie własnego komunikatu
+    // Force subclasses to implement a tailored print operation
     public abstract String toString();
 
-    // Chemy, aby pojazdy potrafiły wypisywać się w alternatywny sposób, odpowiedni dla zdarzenia typu Postój
+    // Force subclasses to provide an alternative print operation for a Stop event
     public abstract String wypiszDoPostoju();
 
     public int numerBoczny() {
@@ -49,34 +53,38 @@ public abstract class Pojazd {
         return this.linia;
     }
 
+    // Adds a passenger to the vehicle
     public void dodajPasażeraPojazd(Pasażer pasażer) {
         if (!this.czyZapełniony()) {
             this.jadący.wstaw(pasażer);
         }
     }
 
-    // Opróżnia pojazd z pasażerów
+    // Empties the vehicle
     public void opróżnij() {
         this.jadący.opróżnij();
     }
 
+    // Tells if the vehicle has reached its maximum capacity
     public boolean czyZapełniony() {
         return this.jadący.czyPełna();
     }
 
+    // Tells if the vehicle is empty
     public boolean czyPusty() {
         return this.jadący.czyPusta();
     }
 
-    // Obsługuje wizytę (postój) na przystanku, tzn. dojazd, wysiadanie, wsiadanie i odjazd z przystanku
+    // Force subclasses to handle a Stop event, i.e. arrival, unloading of passengers, loading of passengers and departure
     public abstract void stańNaPrzystanku(Postój postój, KolejkaZdarzeń q);
 
-    // Losuje przystanek pomiędzy tym, na którym aktualnie się znajduje, a końcem swojej obecnej trasy
+    // Returns a random destination for a pending new passenger between its current stop
+    // and the terminus it's approaching
     public abstract Przystanek nowyCel(int indeksPrzystanku);
 
-    // Obsługuje wysiadanie pasażerów na danym przystanku w danym momencie
+    // Handles the unloading of passengers at a given stop at a given moment in time
     public void wysiadanie(Przystanek przystanek, Moment moment) {
-        // Pasażerowie wysiadają, póki pojazd nie jest pusty i póki na przystanku jest miejsce
+        // The passengers get off the vehicle until the vehicle is empty or the stop is full
         int chętny = this.jadący.znajdźChętnegoDoWysiadki(przystanek);
         while (chętny != -1 && !przystanek.czyZapełniony()) {
             Pasażer pasażer = this.jadący.usuńZeŚrodka(chętny);
@@ -85,29 +93,32 @@ public abstract class Pojazd {
         }
     }
 
-    // "Magicznie" powoduje powrót pojazdu na jego pętlę domową i przygotowanie do kursowania następnego dnia
+    // Makes the vehicle return to its home terminal and prepare for next day service
     public abstract void wróćNaPętlęDomową();
 
-    // Zwraca fałsz tylko, gdy pojazd odjeżdża z pętli
+    // Tells if the Stop event will cause unloading of passengers
     protected abstract boolean czyDojechał(Postój postój);
 
-    // Zwraca fałsz tylko, gdy pojazd dojechał na pętlę
+    // Tells if the stop will cause loading of passengers
     protected abstract boolean czyOdjeżdża(Postój postój);
 
-    // Zwraca fałsz tylko, gdy pojazd znajduje się na swojej pętli domowej, a odjazd z niej musiałby nastąpić po godzinie końca odjazdów
+    // Tells if the vehicle will be departing from the terminus later the same day
+    // Only false iff the vehicle reached its home terminus in the given Stop event
+    // and the next departure would happen after the end of service
     protected abstract boolean czyWyjeżdża(Postój postój);
 
-    // Zwraca następny przystanek na trasie pojazdu w kontekście postoju na danym przystanku
+    // Returns the index of the next stop on the vehicle's route based on the current Stop event
     protected abstract int następnyPrzystanek(Postój postój);
 
+    // Tells if the stop with given ID is a terminal
     protected boolean czyPętla(int indeksPrzystanku) {
         return indeksPrzystanku == 0 || indeksPrzystanku == this.linia.długośćLinii() - 1;
     }
 
-    // Oblicza odstęp między tym, a następnym postojem
+    // Computes the interval between given and next Stop event
     protected abstract int odstęp(Postój postój);
 
-    // Wstawia następny postój z obliczonymi parametrami na kolejkę zdarzeń
+    // Enqueues the next Stop event onto the event queue
     protected abstract void wstawNastępnyPostój(Postój postój, KolejkaZdarzeń q);
 
 }
