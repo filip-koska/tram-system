@@ -89,7 +89,7 @@ public class Symulacja {
         long minuty = Math.round(Math.floor(wynik));
         long sekundy = Math.round(Math.floor((wynik - Math.floor(wynik)) * 60));
 
-        return minuty + " minut " + sekundy + " sekund";//return Math.floor(wynik) + " minut " + Math.floor((wynik - Math.floor(wynik)) * 60)+ " sekund";
+        return minuty + " minut " + sekundy + " sekund";
     }
 
 
