@@ -1,16 +1,18 @@
 package czytnik;
 
 import java.util.Scanner;
+
+// Simple Singleton wrapper for a Scanner
 public final class Czytnik {
-    // dane
+    // data
 
     private static final Scanner wejście = new Scanner(System.in);
 
-    // techniczne
+    // technicalities
 
     private Czytnik() {}
 
-    // operacje
+    // operations
 
     public static Scanner odczyt() {
         return wejście;
