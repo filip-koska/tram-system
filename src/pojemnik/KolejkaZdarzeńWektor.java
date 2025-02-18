@@ -2,19 +2,21 @@ package pojemnik;
 
 import zdarzenia.Zdarzenie;
 
+// Dynamic array-based implementation of priority queue
 public class KolejkaZdarzeńWektor implements KolejkaZdarzeń {
 
-    // dane
+    // data
 
+    // internal dynamic array
     private WektorZdarzeń w;
 
-    // techniczne
+    // technicalities
 
     public KolejkaZdarzeńWektor() {
         this.w = new WektorZdarzeń();
     }
 
-    // operacje
+    // operations
 
     @Override
     public void wstaw(Zdarzenie z) {
