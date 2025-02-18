@@ -3,25 +3,25 @@ package zdarzenia;
 import czas.Moment;
 import pojemnik.KolejkaZdarzeń;
 
-// Klasa przechowująca szeroko pojęte zdarzenie
+// Event class
 public abstract class Zdarzenie {
 
-    // dane
+    // data
 
     private Moment moment;
 
-    // techniczne
+    // technicalities
 
     public Zdarzenie(Moment moment) {
         this.moment = moment;
     }
 
-    // operacje
+    // operations
 
     public Moment moment() {
         return this.moment;
     }
 
-    // Odpowiada za szeroko pojętą obsługę zdarzenia
+    // Handles the event: updates appropriate variables, logs the event etc.
     public abstract void obsłuż(KolejkaZdarzeń q);
 }
