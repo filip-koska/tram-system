@@ -2,19 +2,22 @@ package pojemnik;
 
 import zdarzenia.Zdarzenie;
 
-// Wektor zdarzeń to tablica dynamiczna ze stale utrzymywanym malejącym porządkiem czasów
+// A dynamic array of events
+// The array stores events in descending order of timestamps
 public class WektorZdarzeń implements Wektor {
-    // dane
+    // data
+    // internal array
     private Zdarzenie[] tab;
+    // size
     private int rozmiar;
 
-    // techniczne
+    // technicalities
     public WektorZdarzeń() {
         this.tab = new Zdarzenie[0];
         this.rozmiar = 0;
     }
 
-    // operacje
+    // operations
 
     @Override
     public boolean czyPusty() {
@@ -31,22 +34,22 @@ public class WektorZdarzeń implements Wektor {
         return this.tab.length;
     }
 
-    // Podwaja pojemność wektora w przypadku osiągnięcia aktualnej pojemności;
-    // Działa w zamortyzowanym czasie stałym
+    // Doubles the array's capacity in case of reaching current capacity
+    // Works in amortised constant time
     private void rozszerz() {
         Zdarzenie[] wynik = new Zdarzenie[this.pojemność() * 2 + (this.pojemność() == 0 ? 1 : 0)];
         System.arraycopy(this.tab, 0, wynik, 0, this.pojemność());
         this.tab = wynik;
     }
 
-    // Metoda pomocnicza, zamienia elementy o indeksach i oraz j miejscami
+    // swap
     private void zamień(int i, int j) {
         Zdarzenie pom = this.tab[i];
         this.tab[i] = this.tab[j];
         this.tab[j] = pom;
     }
 
-    // Wstawia zdarzenie w odpowiednie miejsce na wektorze
+    // insert
     public void wstaw(Zdarzenie z) {
         if (this.rozmiar == this.pojemność()) {
             this.rozszerz();
@@ -63,7 +66,7 @@ public class WektorZdarzeń implements Wektor {
         }
     }
 
-    // Zdejmuje ostatni (najwcześniejszy) element z wektora
+    // pop
     public Zdarzenie zdejmij() {
         assert !this.czyPusty(): "Próba zdjęcia zdarzenia z pustej kolejki";
         return this.tab[--this.rozmiar];
