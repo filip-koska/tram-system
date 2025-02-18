@@ -9,18 +9,20 @@ import symulacja.DaneSymulacji;
 import czytnik.Czytnik;
 import zdarzenia.Postój;
 
+// Class to represent a tram line
 public class Linia {
-    // dane
+    // data
 
     private int numer;
     private Przystanek[] przystanki;
     private int[] czasy;
 
-    // Celowa decyzja projektowa: być może będziemy chcieli w przyszłości rozwinąć symulację o linie hybrydowe, o różnych typach pojazdów
+    // In the future, one may want to expand the simulation by adding lines served by other types of vehicles
+    // Or even hybrid lines served by many types of vehicles at the same time
     private Pojazd[] pojazdy;
     private int odstęp;
 
-    // techniczne
+    // technicalities
 
     public Linia(int numer, DaneSymulacji daneSymulacji) {
         this.numer = numer;
@@ -57,8 +59,8 @@ public class Linia {
         }
     }
 
-    // operacje
-
+    // operations
+    
     @Override
     public String toString() {
         String wynik = "\nLinia nr " + this.numer + ", liczba tramwajów: " + this.pojazdy.length + "\n";
@@ -85,22 +87,22 @@ public class Linia {
         return this.przystanki.length;
     }
 
-    // Pobiera przystanek linii o danym indeksie
+    // Returns the i-th stop of the line (indexing starts from a construction-time-determined end)
     public Przystanek przystanek(int i) {
         assert i >= 0 && i < this.przystanki.length: "Niepoprawny indeks";
         return this.przystanki[i];
     }
 
-    // Pobiera czas o indeksie i z tablicy czasów przejazdu
+    // Returns the time needed to travel from the i-th stop of the line to the (i+1)-th
     public int czas(int i) {
         assert i >= 0 && i < this.długośćLinii(): "Niepoprawny indeks";
         return this.czasy[i];
     }
 
-    // Oblicza odstęp między porannymi odjazdami tramwajów z tej samej pętli
+    // Computes the interval between the initial departures of vehicles within one terminal
     private int obliczOdstęp(int sumaCzasów) {
         int wynik;
-        // jeśli linia ma 0 pojazdów
+        // line has 0 vehicles
         if (this.pojazdy.length == 0) {
             wynik = 1;
         }
@@ -108,7 +110,7 @@ public class Linia {
         return wynik;
     }
 
-    // Wypuszcza rano pojazdy na pętle
+    // Lets out the vehicles from the terminal
     public void wypuśćPojazdy(KolejkaZdarzeń q, int dzień) {
         int zmianaStrony = this.pojazdy.length / 2;
         if (this.pojazdy.length % 2 == 1) {
@@ -121,8 +123,8 @@ public class Linia {
                     indeksPętliDomowej, this.pojazdy[i]));
         }
     }
-
-    // Opróżnia wszystkie pojazdy linii z jadących pasażerów
+    
+    // Empties all vehicles serving the line
     public void opróżnijPojazdy() {
         for (int i = 0; i < this.pojazdy.length; ++i) {
             this.pojazdy[i].opróżnij();
